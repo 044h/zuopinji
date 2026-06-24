@@ -308,7 +308,40 @@
 }
 
 .pdf-download-btn:hover {
-  background: rgba(167, 139, 250, 0.8);
+  background: var(--accent-color-hover);
+  transform: translateY(-2px);
+}
+
+.pdf-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: #666;
+  text-align: center;
+}
+
+.pdf-fallback p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.pdf-fallback-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.pdf-fallback-link:hover {
+  background: var(--accent-color-hover);
   transform: translateY(-2px);
 }
 

@@ -1,11 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 
-export function LazyImage({ src, alt, className, aspectRatio = 'auto', ...props }) {
+export function LazyImage({ src, alt, className, aspectRatio = 'auto', disableLazy = false, ...props }) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isInView, setIsInView] = useState(false);
+  const [isInView, setIsInView] = useState(disableLazy);
   const imgRef = useRef(null);
 
   useEffect(() => {
+    if (disableLazy) {
+      setIsInView(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -24,7 +29,7 @@ export function LazyImage({ src, alt, className, aspectRatio = 'auto', ...props 
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [disableLazy]);
 
   return (
     <div 

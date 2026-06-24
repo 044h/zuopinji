@@ -143,7 +143,6 @@ function GalaxyDivider() {
 
 function Hero() {
   const [scrolled, setScrolled] = useState(false)
-  const [videoError, setVideoError] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -157,21 +156,16 @@ function Hero() {
     <section className="hero">
       <div className="hero-mask" />
       <div className="hero-video-container">
-        {!videoError ? (
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline 
-            className="hero-video" 
-            preload="metadata"
-            onError={() => setVideoError(true)}
-          >
-            <source src="/分类/背景/首屏背景.mp4" type="video/mp4" />
-          </video>
-        ) : (
-          <div className="hero-video-error">视频加载失败</div>
-        )}
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          className="hero-video" 
+          preload="auto"
+        >
+          <source src="/分类/背景/首屏背景.mp4" type="video/mp4" />
+        </video>
         <div className="hero-overlay" />
       </div>
 
