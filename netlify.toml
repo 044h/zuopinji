@@ -9,25 +9,46 @@
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
+  force = false
+  conditions = { Language = ["*"] }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
 
 [[headers]]
-  for = "/*.pdf"
+  for = "/assets/*.js"
+  [headers.values]
+    Content-Type = "application/javascript; charset=utf-8"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*.css"
+  [headers.values]
+    Content-Type = "text/css; charset=utf-8"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/分类/*.pdf"
   [headers.values]
     Content-Type = "application/pdf"
     Content-Disposition = "inline"
 
 [[headers]]
-  for = "/*.mp4"
+  for = "/分类/*.mp4"
   [headers.values]
     Content-Type = "video/mp4"
 
 [[headers]]
-  for = "/*.jpg"
+  for = "/分类/*.jpg"
   [headers.values]
+    Content-Type = "image/jpeg"
     Cache-Control = "public, max-age=31536000"
 
 [[headers]]
-  for = "/*.png"
+  for = "/分类/*.png"
   [headers.values]
+    Content-Type = "image/png"
     Cache-Control = "public, max-age=31536000"
