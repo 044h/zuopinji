@@ -68,7 +68,10 @@ export default function BrandGallery({ isOpen, onClose }) {
                   className="photo-item" 
                   onClick={() => setSelectedProject({ category, data })}
                 >
-                  <LazyImage src={`/分类/商业传播策划/${category}/${data.cover}`} alt={category} />
+                  <LazyImage 
+                    src={`/分类/商业传播策划/${category}/${data.cover}`} 
+                    alt={category} 
+                  />
                   <div className="photo-overlay">
                     <FaFilePdf />
                   </div>
@@ -86,11 +89,19 @@ export default function BrandGallery({ isOpen, onClose }) {
           </button>
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <div className="pdf-container">
-              <iframe 
-                src={`/分类/商业传播策划/${selectedProject.category}/${selectedProject.data.pdf}`}
-                title={selectedProject.category}
+              <object 
+                data={`/分类/商业传播策划/${selectedProject.category}/${selectedProject.data.pdf}#view=FitH`}
+                type="application/pdf"
                 className="pdf-preview"
-              />
+              >
+                <div className="pdf-fallback">
+                  <p>您的浏览器不支持直接预览PDF文件</p>
+                  <a href={`/分类/商业传播策划/${selectedProject.category}/${selectedProject.data.pdf}`} download className="pdf-fallback-link">
+                    <FaDownload />
+                    <span>点击下载查看</span>
+                  </a>
+                </div>
+              </object>
             </div>
             <a 
               href={`/分类/商业传播策划/${selectedProject.category}/${selectedProject.data.pdf}`}

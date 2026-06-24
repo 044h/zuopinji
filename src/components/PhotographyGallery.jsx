@@ -109,7 +109,10 @@ export default function PhotographyGallery({ isOpen, onClose }) {
                   className="photo-item" 
                   onClick={() => handleSelectCategory(category, data)}
                 >
-                  <LazyImage src={`/分类/摄影摄像/${category}/${data.cover}`} alt={category} />
+                  <LazyImage 
+                    src={`/分类/摄影摄像/${category}/${data.cover}`} 
+                    alt={category} 
+                  />
                   <div className="photo-overlay">
                     <FaSearch />
                   </div>

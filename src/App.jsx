@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { FaWeixin, FaEnvelope, FaMapMarkerAlt, FaQuoteLeft, FaCamera, FaVideo, FaPen, FaUsers, FaChevronRight, FaUser } from 'react-icons/fa'
 import { FiPhone } from 'react-icons/fi'
 import './App.css'
@@ -9,12 +9,12 @@ import { LazyImage } from './components/LazyImage'
 import './components/LazyImage.css'
 import ProjectModal from './components/ProjectModal'
 import './components/ProjectModal.css'
-import AIGCGallery from './components/AIGCGallery'
-import './components/AIGCGallery.css'
-import PhotographyGallery from './components/PhotographyGallery'
 import './components/PhotographyGallery.css'
-import BrandGallery from './components/BrandGallery'
-import GraphicGallery from './components/GraphicGallery'
+
+const AIGCGallery = lazy(() => import('./components/AIGCGallery'))
+const PhotographyGallery = lazy(() => import('./components/PhotographyGallery'))
+const BrandGallery = lazy(() => import('./components/BrandGallery'))
+const GraphicGallery = lazy(() => import('./components/GraphicGallery'))
 
 // 禁用浏览器滚动恢复，确保刷新后回到顶部
 if (typeof window !== 'undefined') {
@@ -143,7 +143,7 @@ function GalaxyDivider() {
 
 function Hero() {
   const [scrolled, setScrolled] = useState(false)
-  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [videoError, setVideoError] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -153,26 +153,26 @@ function Hero() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVideoLoaded(true)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
   return (
     <section className="hero">
       <div className="hero-mask" />
       <div className="hero-video-container">
-        {videoLoaded && (
-          <video autoPlay muted loop playsInline className="hero-video" preload="auto">
-            <source src="/分类/背景/背景.mp4" type="video/mp4" />
+        {!videoError ? (
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            className="hero-video" 
+            preload="metadata"
+            onError={() => setVideoError(true)}
+          >
+            <source src="/分类/背景/首屏背景.mp4" type="video/mp4" />
           </video>
+        ) : (
+          <div className="hero-video-error">视频加载失败</div>
         )}
         <div className="hero-overlay" />
-        {!videoLoaded && (
-          <div className="hero-video-placeholder" />
-        )}
       </div>
 
       <nav className={`hero-nav ${scrolled ? 'scrolled' : ''}`}>
@@ -498,22 +498,24 @@ function App() {
       <Skills />
       <GalaxyDivider />
       <Contact />
-      <BrandGallery 
-        isOpen={showBrandGallery} 
-        onClose={() => setShowBrandGallery(false)} 
-      />
-      <AIGCGallery 
-        isOpen={showAIGCGallery} 
-        onClose={() => setShowAIGCGallery(false)} 
-      />
-      <PhotographyGallery 
-        isOpen={showPhotoGallery} 
-        onClose={() => setShowPhotoGallery(false)} 
-      />
-      <GraphicGallery 
-        isOpen={showGraphicGallery} 
-        onClose={() => setShowGraphicGallery(false)} 
-      />
+      <Suspense fallback={<div className="gallery-loading">加载中...</div>}>
+        <BrandGallery 
+          isOpen={showBrandGallery} 
+          onClose={() => setShowBrandGallery(false)} 
+        />
+        <AIGCGallery 
+          isOpen={showAIGCGallery} 
+          onClose={() => setShowAIGCGallery(false)} 
+        />
+        <PhotographyGallery 
+          isOpen={showPhotoGallery} 
+          onClose={() => setShowPhotoGallery(false)} 
+        />
+        <GraphicGallery 
+          isOpen={showGraphicGallery} 
+          onClose={() => setShowGraphicGallery(false)} 
+        />
+      </Suspense>
     </div>
   )
 }

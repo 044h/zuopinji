@@ -68,7 +68,10 @@ export default function AIGCGallery({ isOpen, onClose }) {
                   className="photo-item" 
                   onClick={() => setSelectedVideo({ category, video: data.video })}
                 >
-                  <LazyImage src={`/分类/aigc/${category}/${data.cover}`} alt={category} />
+                  <LazyImage 
+                    src={`/分类/aigc/${category}/${data.cover}`} 
+                    alt={category} 
+                  />
                   <div className="photo-overlay">
                     <FaPlay />
                   </div>
